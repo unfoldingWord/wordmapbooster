@@ -94,3 +94,10 @@ Examples of using this module can be obtained by referencing three different pla
 2. `Alignment Transferer`.  The react demo application developed along with this code has a background thread which trains this model.  You can see can see the [background thread's implementation](https://github.com/JEdward7777/alignment-transferer/blob/master/src/workers/AlignmentTrainer.ts)
 
 3. `boostwordmapwithfs`.  There is also a node project which is used to test this module.  This project is not limited by the memory constraints found in a WebBrowser.  This project does not have an interface built for it but expects the source to be modified for individual tests.  [run_alignment_tests.ts](https://github.com/JEdward7777/boostwordmapwithfs/blob/master/dev_scripts/run_alignment_tests.ts) is the main entry point of this project.
+
+## Publishing
+
+### npm
+```bash
+ npm i --legacy-peer-deps && npm run build && npm publish
+```

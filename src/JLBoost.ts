@@ -251,6 +251,7 @@ interface JLBoost__train__NamedParameters {
     n_steps: number,
     tree_depth: number,
     talk: boolean,
+    progress_callback?: (step: number, trainingSteps, current_loss: number) => void,
 }
 interface JLBoost__constructor__NamedParameters{
     learning_rate?: number,
@@ -322,6 +323,7 @@ export class JLBoost {
         n_steps = 1000,
         tree_depth = 2,
         talk = true,
+        progress_callback = null
     }: JLBoost__train__NamedParameters ): JLBoost {
         let current_output = this.predict(xy_data);
 
@@ -407,13 +409,14 @@ export class JLBoost {
                         `Step ${n}: Output  ${new_loss}  split on ${new_tree.feature_index} at ${new_tree.split_value}`
                     );
                 }
-
+                progress_callback?.( n, n_steps, new_loss );
             } else {
                 if (talk) {
                     console.log(
                         `Step ${n}: Output [${new_loss}] split on ${new_tree.feature_index} at ${new_tree.split_value} --rejected`
                     );
                 }
+                progress_callback?.( n, n_steps, new_loss );
             }
         }
         return this;

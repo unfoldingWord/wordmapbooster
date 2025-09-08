@@ -1,0 +1,10 @@
+.yalc/
+.vscode/
+.idea/
+.editorconfig
+yalc.lock
+src/
+coverage/
+node_modules/
+**/__tests__/
+*.tgz

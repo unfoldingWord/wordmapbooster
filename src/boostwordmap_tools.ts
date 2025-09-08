@@ -845,7 +845,8 @@ export class JLBoostWordMap extends BoostWordMap{
                 y_index:"output",
                 n_steps:this.opts.train_steps,
                 tree_depth:this.opts.tree_depth,
-                talk:true,
+                talk: (this.opts.verbose_training !== undefined) ? this.opts.verbose_training : true,
+                progress_callback: this.opts.progress_callback,
             });
             resolve();
         });
@@ -920,7 +921,8 @@ export class MorphJLBoostWordMap extends BoostWordMap{
                 y_index:"output",
                 n_steps:this.opts.train_steps,
                 tree_depth:this.opts.tree_depth,
-                talk:true,
+                talk: (this.opts.verbose_training !== undefined) ? this.opts.verbose_training : true,
+                progress_callback: this.opts.progress_callback,
             });
             resolve();
         });
