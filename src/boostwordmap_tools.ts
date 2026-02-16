@@ -1,7 +1,15 @@
 //import {WordMapProps} from "wordmap/core/WordMap"
-import WordMap, { Alignment, Ngram, Suggestion, Prediction, Engine } from 'wordmap';
+import WordMap, {
+    Alignment,
+    AlignmentMemoryIndex,
+    CorpusIndex,
+    Engine,
+    Ngram,
+    Suggestion,
+    Prediction,
+} from 'wordmap';
 import Lexer,{Token} from "wordmap-lexer";
-import {is_correct_prediction, is_part_of_correct_prediction, token_to_hash, updateTokenLocations} from "./wordmap_tools"; 
+import {is_correct_prediction, token_to_hash, updateTokenLocations} from "./wordmap_tools"; 
 import {JLBoost} from "./JLBoost";
 import { shuffleArray } from './misc_tools';
 
@@ -313,13 +321,23 @@ export abstract class AbstractWordMapWrapper {
     }
 
     clearAlignmentMemory(){
-        //clear out the sashed memory
+        //clear out the stashed memory
         this.alignmentStash.length = 0;
 
         //reboot wordmap by recreating it and stuffing it again with the saved corpus.
         this.wordMap = new WordMap(this.opts);
         this.engine = (this.wordMap as any).engine;
         this.wordMap.appendCorpusTokens( this.sourceCorpusStash, this.targetCorpusStash );
+    }
+
+    emptyAlignmentMemory(){
+        //clear out the stashed memory
+        this.alignmentStash.length = 0;
+        
+        // @ts-ignore
+        this.engine.corpusIndex = new CorpusIndex();
+        // @ts-ignore
+        this.engine.alignmentMemoryIndex = new AlignmentMemoryIndex();
     }
 
     public appendCorpusTokens( sourceTokens: Token[][], targetTokens: Token[][]){
