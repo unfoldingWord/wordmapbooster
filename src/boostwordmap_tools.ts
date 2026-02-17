@@ -331,8 +331,10 @@ export abstract class AbstractWordMapWrapper {
     }
 
     emptyAlignmentMemory(){
-        //clear out the stashed memory
+        //clear out content memories
         this.alignmentStash.length = 0;
+        this.sourceCorpusStash.length = 0;
+        this.targetCorpusStash.length = 0;
         
         // @ts-ignore
         this.engine.corpusIndex = new CorpusIndex();
