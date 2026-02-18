@@ -320,6 +320,13 @@ export abstract class AbstractWordMapWrapper {
         }
     }
 
+    /**
+     * Clears the alignment memory by resetting the alignment stash and recreating the word map.
+     * The method empties the alignment stash, initializes a new word map,
+     * and repopulates it with the saved source and target corpora.
+     *
+     * @return {void} Does not return any value.
+     */
     clearAlignmentMemory(){
         //clear out the stashed memory
         this.alignmentStash.length = 0;
@@ -330,11 +337,20 @@ export abstract class AbstractWordMapWrapper {
         this.wordMap.appendCorpusTokens( this.sourceCorpusStash, this.targetCorpusStash );
     }
 
+    /**
+     * Clears all memory and data related to content alignment, source corpus, target corpus,
+     * and resets the engine's corpus and alignment memory indices.
+     *
+     * @return {void} No return value.
+     */
     emptyAlignmentMemory(){
         //clear out content memories
+        
         this.alignmentStash.length = 0;
         this.sourceCorpusStash.length = 0;
         this.targetCorpusStash.length = 0;
+        
+        // clear out engine memory - nasty hacking of private properties
         
         // @ts-ignore
         this.engine.corpusIndex = new CorpusIndex();

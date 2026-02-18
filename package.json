@@ -1,6 +1,6 @@
 {
   "name": "uw-wordmapbooster",
-  "version": "1.0.4-beta.3",
+  "version": "1.0.4",
   "description": "Adds an AI boost to wordmap.  Wordmap is a tool for helping word alignments between a source and target language.",
   "main": "dist/index.js",
   "repository": "https://github.com/JEdward7777/wordmapbooster.git",
@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "usfm-js": "^3.4.2",
-    "wordmap": "0.6.2-beta.2",
+    "wordmap": "0.6.2",
     "wordmap-lexer": "^0.3.6"
   }
 }
