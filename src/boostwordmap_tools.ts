@@ -1,7 +1,15 @@
 //import {WordMapProps} from "wordmap/core/WordMap"
-import WordMap, { Alignment, Ngram, Suggestion, Prediction, Engine } from 'wordmap';
+import WordMap, {
+    Alignment,
+    AlignmentMemoryIndex,
+    CorpusIndex,
+    Engine,
+    Ngram,
+    Suggestion,
+    Prediction,
+} from 'wordmap';
 import Lexer,{Token} from "wordmap-lexer";
-import {is_correct_prediction, is_part_of_correct_prediction, token_to_hash, updateTokenLocations} from "./wordmap_tools"; 
+import {is_correct_prediction, token_to_hash, updateTokenLocations} from "./wordmap_tools"; 
 import {JLBoost} from "./JLBoost";
 import { shuffleArray } from './misc_tools';
 
@@ -312,14 +320,42 @@ export abstract class AbstractWordMapWrapper {
         }
     }
 
+    /**
+     * Clears the alignment memory by resetting the alignment stash and recreating the word map.
+     * The method empties the alignment stash, initializes a new word map,
+     * and repopulates it with the saved source and target corpora.
+     *
+     * @return {void} Does not return any value.
+     */
     clearAlignmentMemory(){
-        //clear out the sashed memory
+        //clear out the stashed memory
         this.alignmentStash.length = 0;
 
         //reboot wordmap by recreating it and stuffing it again with the saved corpus.
         this.wordMap = new WordMap(this.opts);
         this.engine = (this.wordMap as any).engine;
         this.wordMap.appendCorpusTokens( this.sourceCorpusStash, this.targetCorpusStash );
+    }
+
+    /**
+     * Clears all memory and data related to content alignment, source corpus, target corpus,
+     * and resets the engine's corpus and alignment memory indices.
+     *
+     * @return {void} No return value.
+     */
+    emptyAlignmentMemory(){
+        //clear out content memories
+        
+        this.alignmentStash.length = 0;
+        this.sourceCorpusStash.length = 0;
+        this.targetCorpusStash.length = 0;
+        
+        // clear out engine memory - nasty hacking of private properties
+        
+        // @ts-ignore
+        this.engine.corpusIndex = new CorpusIndex();
+        // @ts-ignore
+        this.engine.alignmentMemoryIndex = new AlignmentMemoryIndex();
     }
 
     public appendCorpusTokens( sourceTokens: Token[][], targetTokens: Token[][]){
